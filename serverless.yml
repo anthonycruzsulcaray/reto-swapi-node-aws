@@ -1,0 +1,68 @@
+service: reto-swapi-node-aws
+
+frameworkVersion: '3'
+
+
+plugins:
+ - serverless-plugin-typescript
+ - serverless-offline
+ - serverless-plugin-log-retention
+custom:
+  logRetentionInDays: 7 
+  serverless-offline:
+      prefix: "starwars-api"
+      noPrependStageInUrl: true
+  dotenv:
+    enabled: true
+    path: .env
+useDotenv: true
+provider:
+  name: aws
+  lambdaHashingVersion: '20201221'
+  runtime: nodejs18.x
+  region: ${opt:region,'us-west-1'} 
+  stage: dev
+  memorySize: 250
+  apiGateway:
+    binaryMediaTypes:
+      - 'multipart/form-data'
+  environment:
+    DYNAMO_DB_TABLE: ${env:DYNAMO_DB_TABLE}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 'dynamodb:*'
+          Resource: '*'
+functions:
+  api:
+    handler: src/serverlesDeploy/http/lambda.handler
+    timeout: 30
+    events:
+      - http:
+          path: /starwars/{id}
+          method: GET
+          cors:
+            origin: '*'
+            headers: 
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
+      - http:
+          path: /starwars
+          method: GET
+          cors:
+            origin: '*'
+            headers: 
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false            
