@@ -21,7 +21,7 @@ async function bootstrapServer(): Promise<Server> {
       const expressApp = express();
       const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressApp), { cors: true })
       nestApp.use(eventContext());
-      nestApp.setGlobalPrefix('starwars-api')
+      // nestApp.setGlobalPrefix('starwars-api')
       await nestApp.init();
       cachedServer = createServer(expressApp, undefined, binaryMimeTypes);
    }

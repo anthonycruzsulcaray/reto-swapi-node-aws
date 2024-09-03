@@ -1,4 +1,4 @@
-service: reto-swapi-node-aws
+service: starwars-api
 
 frameworkVersion: '3'
 
@@ -8,10 +8,8 @@ plugins:
  - serverless-offline
  - serverless-plugin-log-retention
 custom:
-  logRetentionInDays: 7 
-  serverless-offline:
-      prefix: "starwars-api"
-      noPrependStageInUrl: true
+  logRetentionInDays: 7  
+  stage: ${opt:stage, self:provider.stage}
   dotenv:
     enabled: true
     path: .env
@@ -23,12 +21,8 @@ provider:
   region: ${opt:region,'us-west-1'} 
   stage: dev
   memorySize: 250
-  apiGateway:
-    binaryMediaTypes:
-      - 'multipart/form-data'
   environment:
     DYNAMO_DB_TABLE: ${env:DYNAMO_DB_TABLE}
-
   iam:
     role:
       statements:
@@ -45,24 +39,15 @@ functions:
           method: GET
           cors:
             origin: '*'
-            headers: 
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
       - http:
           path: /starwars
           method: GET
           cors:
-            origin: '*'
+            origin: '*'  
             headers: 
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false            
+              - X-Amz-User-Agent       

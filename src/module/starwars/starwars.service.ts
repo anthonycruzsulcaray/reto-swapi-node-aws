@@ -15,8 +15,6 @@ export class StarwarsService {
 
 
     // Guardar o actualizar personaje en DynamoDB
-
-    /*
     await this.dynamoDb.put({
       TableName: process.env.DYNAMO_DB_TABLE,
       Item: {
@@ -24,7 +22,7 @@ export class StarwarsService {
         data: characterData,
       },
     }).promise();
-    */
+    
     return characterData;
   }
 
