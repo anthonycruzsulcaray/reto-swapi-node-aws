@@ -1,39 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { DynamoDB } from 'aws-sdk';
+import { FilmsApiRest } from '../api/films';
+import DynamoRepository from '../repository/dynamo/films.repository';
+import { TranslateObject } from '../../utils/translateObject';
+import { TranslateFilmsResponse } from './data/response';
+import FilmsValidator from '../../validation/filmsValidation';
+import { FilmRequest } from './data/request';
+
 
 @Injectable()
 export class StarwarsService {
-  private dynamoDb: DynamoDB.DocumentClient = new DynamoDB.DocumentClient();
 
-  constructor(private readonly httpService: HttpService) { }
+  constructor(private apiFilms: FilmsApiRest, private dynamoRepository: DynamoRepository, private translate: TranslateObject, private validator: FilmsValidator) { }
 
-  async getCharacter(id: string): Promise<any> {
-    // Obtener datos del personaje de SWAPI
-    const swapiResponse = await this.httpService.get(`https://swapi.py4e.com/api/people/${id}/`).toPromise();
-    const characterData = swapiResponse.data;
-
-
-    // Guardar o actualizar personaje en DynamoDB
-    await this.dynamoDb.put({
-      TableName: process.env.DYNAMO_DB_TABLE,
-      Item: {
-        id,
-        data: characterData,
-      },
-    }).promise();
-    
-    return characterData;
+  async listall(): Promise<any> {
+    // dynamo
+    const resultRest = await this.dynamoRepository.listAll()
+    console.log("resultRest:::  ", resultRest)
+    let dataResponse: TranslateFilmsResponse[] = [];
+    for (var i = 0; i < resultRest.length; i++) {
+      const dynamoId = resultRest[i].id
+      const item = resultRest[i].data
+      // translate
+      const films = this.translate.filmsToSpanish(dynamoId, item)
+      dataResponse.push(films)
+    }
+    console.log("dataResponse::: ", dataResponse)
+    return dataResponse;
   }
 
-
-  async getCharactersFromDynamoDB(): Promise<any> {
-    const result = await this.dynamoDb.scan({
-      TableName: process.env.DYNAMO_DB_TABLE,
-    }).promise();
-
-    return result.Items;
+  async listById(id: number): Promise<any> {
+    // api startwars
+    const swapiResponse = await this.apiFilms.listById(id)
+    // dynamo
+    await this.dynamoRepository.add(id, swapiResponse)
+    // translate
+    const films = this.translate.filmsToSpanish(id, swapiResponse)
+    return films;
   }
+
+  async add(bodyFilm: FilmRequest): Promise<any> {
+    this.validator.validate(bodyFilm)
+    bodyFilm.creado = new Date().toDateString()
+    bodyFilm.id = (await this.dynamoRepository.listAll()).length + 1
+    // dynamo
+    // translate
+    const filmToEnglish = this.translate.filmsToEnglish(bodyFilm.id, bodyFilm)
+    await this.dynamoRepository.add(filmToEnglish.id,filmToEnglish)
+    return bodyFilm;
+  }
+
 
 
 }

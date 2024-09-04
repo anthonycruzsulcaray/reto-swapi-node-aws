@@ -1,22 +1,28 @@
-import { Controller, Get, HttpCode, Param } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { StarwarsService } from './starwars.service';
+import { FilmRequest } from './data/request';
 
 @Controller('starwars')
 export class StarwarsController {
-  constructor(private readonly starwarsService: StarwarsService) {}
+  constructor(private readonly starwarsService: StarwarsService) { }
 
-  @Get(':id')
+  @Get('films')
   @HttpCode(200)
-  async getCharacter(@Param('id') id: string) {
-    return await this.starwarsService.getCharacter(id);
+  async listAll() {
+    return await this.starwarsService.listall();
   }
 
-  @Get()
+  @Get('films/:id')
   @HttpCode(200)
-  async getCharacters() {
-    return await this.starwarsService.getCharactersFromDynamoDB();
+  async listById(@Param('id') id: string) {
+    return await this.starwarsService.listById(+id);
   }
-  
+
+  @Post('films')
+  @HttpCode(201)
+  async add(@Body() requestBody: FilmRequest) {
+    return await this.starwarsService.add(requestBody);
+  }
 
 
 }

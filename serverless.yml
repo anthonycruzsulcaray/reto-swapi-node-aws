@@ -23,6 +23,7 @@ provider:
   memorySize: 250
   environment:
     DYNAMO_DB_TABLE: ${env:DYNAMO_DB_TABLE}
+    API_URL_BASE: ${env:API_URL_BASE}
   iam:
     role:
       statements:
@@ -35,19 +36,17 @@ functions:
     timeout: 30
     events:
       - http:
-          path: /starwars/{id}
+          path: /starwars/films/{id}
           method: GET
           cors:
             origin: '*'
       - http:
-          path: /starwars
+          path: /starwars/films
           method: GET
           cors:
-            origin: '*'  
-            headers: 
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent       
+            origin: '*'   
+      - http:
+          path: /starwars/films
+          method: POST
+          cors:
+            origin: '*'                 
