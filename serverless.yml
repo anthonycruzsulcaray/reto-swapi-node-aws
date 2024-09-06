@@ -8,8 +8,6 @@ plugins:
  - serverless-offline
  - serverless-plugin-log-retention
 custom:
-  optimize:
-    external: ['swagger-ui-dist']
   logRetentionInDays: 7  
   stage: ${opt:stage, self:provider.stage}
   dotenv:

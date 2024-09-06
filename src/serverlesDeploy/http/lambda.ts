@@ -45,20 +45,11 @@ async function bootstrapServer(): Promise<Server> {
 }
 
 export const handler: Handler = async (event: any, context: Context) => {
-   if (event.path === '/docs') {
-      event.path === '/docs'
-   }
-   // swaager
-   event.path = event.path.includes('swagger-ui') ? `/docs${event.path}` : event.path;
-   // 
    cachedServer = await bootstrapServer();
    console.log("REQUEST::", JSON.stringify(event))
    console.log("REQUEST::RESOURCE::", event.resource)
    console.log("REQUEST::pathParameters::", event.pathParameters)
-   if (
-      event.body &&
-      getContentType(event)
-   ) {
+   if (event.body && getContentType(event)) {
       //event.body = (Buffer.from(event.body, 'binary') as unknown) as string;  
       console.log("REQUEST::BODY::", 'binary')
    } else {
