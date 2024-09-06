@@ -53,7 +53,7 @@ functions:
           cors:
             origin: '*'   
       - http:
-          path: /docs
+          path: docs
           method: GET
           cors:
             origin: '*'                 

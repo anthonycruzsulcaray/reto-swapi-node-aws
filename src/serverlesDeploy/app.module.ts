@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { StarwarsModule } from '../../module/starwars/starwars.module';
+import { StarwarsModule } from '../module/starwars/starwars.module';
 
 @Module({
   imports: [StarwarsModule],
