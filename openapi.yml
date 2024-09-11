@@ -4,7 +4,7 @@ info:
   description: "Postulacion Anthony Cruz"
   version: "1.0.0"
 servers:
-- url: "https://bn4pshew21.execute-api.us-west-1.amazonaws.com/{basePath}"
+- url: "https://bn4pshew21.execute-api.us-west-1.amazonaws.com/{basePath}/starwars"
   variables:
     basePath:
       default: "dev"
@@ -27,13 +27,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArrayOfPelicula"
+                $ref: "#/components/schemas/Arrayfilm"
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pelicula"
+              $ref: "#/components/schemas/film"
         required: true
       responses:
         200:
@@ -51,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Pelicula"
+                $ref: "#/components/schemas/film"
   /films/{id}:
     get:
       parameters:
@@ -76,14 +76,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Pelicula"
+                $ref: "#/components/schemas/film"
 components:
   schemas:
-    ArrayOfPelicula:
+    Arrayfilm:
       type: array
       items:
-        $ref: "#/components/schemas/Pelicula"
-    Pelicula:
+        $ref: "#/components/schemas/film"
+    film:
       type: object
       properties:
         id:
