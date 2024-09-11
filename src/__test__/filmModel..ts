@@ -3,8 +3,8 @@ import { instance, mock, when, verify, anything, deepEqual } from 'ts-mockito';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { AWSError } from 'aws-sdk';
-import DynamoDataBase from '../src/module/db/dynamo';
-import DynamoRepository from '../src/module/repository/dynamo/films.repository';
+import DynamoDataBase from '../../src/module/db/dynamo';
+import DynamoRepository from '../../src/module/repository/dynamo/films.repository';
 
 describe('DynamoRepository', () => {
     let dynamoRepository: DynamoRepository;

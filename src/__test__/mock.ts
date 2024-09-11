@@ -1,4 +1,4 @@
-import { TranslateFilmsResponse } from '../src/module/starwars/data/response';
+import { TranslateFilmsResponse } from '../../src/module/starwars/data/response';
 
 export const cardMock = (): TranslateFilmsResponse[] =>
     [

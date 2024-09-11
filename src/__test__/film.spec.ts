@@ -1,15 +1,15 @@
 import { Test } from "@nestjs/testing";
-import DynamoDataBase from '../src/module/db/dynamo';
-import DynamoRepository from '../src/module/repository/dynamo/films.repository';
-import { StarwarsController } from '../src/module/starwars/starwars.controller';
+import DynamoDataBase from '../../src/module/db/dynamo';
+import DynamoRepository from '../../src/module/repository/dynamo/films.repository';
+import { StarwarsController } from '../../src/module/starwars/starwars.controller';
 import { ConfigService } from "@nestjs/config";
-import { StarwarsService } from '../src/module/starwars/starwars.service';
-import { FilmsApiRest } from '../src/module/api/films';
-import { TranslateObject } from '../src/utils/translateObject';
-import FilmsValidator from '../src/validation/filmsValidation';
+import { StarwarsService } from '../../src/module/starwars/starwars.service';
+import { FilmsApiRest } from '../../src/module/api/films';
+import { TranslateObject } from '../../src/utils/translateObject';
+import FilmsValidator from '../../src/validation/filmsValidation';
 import { configServiceMock } from "./config.mock";
 import { instance } from 'ts-mockito';
-import { TranslateFilmsResponse } from '../src/module/starwars/data/response';
+import { TranslateFilmsResponse } from '../../src/module/starwars/data/response';
 //import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 describe('CARD MODULE', () => {
