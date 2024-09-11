@@ -49,9 +49,4 @@ functions:
           path: /starwars/films
           method: POST
           cors:
-            origin: '*'   
-      - http:
-          path: docs
-          method: GET
-          cors:
             origin: '*'                 

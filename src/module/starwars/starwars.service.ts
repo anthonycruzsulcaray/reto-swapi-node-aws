@@ -12,7 +12,7 @@ export class StarwarsService {
 
   constructor(private apiFilms: FilmsApiRest, private dynamoRepository: DynamoRepository, private translate: TranslateObject, private validator: FilmsValidator) { }
 
-  async listall(): Promise<any> {
+  async listall(): Promise<TranslateFilmsResponse[]> {
     // dynamo
     const resultRest = await this.dynamoRepository.listAll()
     console.log("resultRest:::  ", resultRest)
@@ -25,10 +25,11 @@ export class StarwarsService {
       dataResponse.push(films)
     }
     console.log("dataResponse::: ", dataResponse)
+
     return dataResponse;
   }
 
-  async listById(id: number): Promise<any> {
+  async listById(id: number): Promise<TranslateFilmsResponse> {
     // api startwars
     const swapiResponse = await this.apiFilms.listById(id)
     // dynamo
@@ -38,14 +39,14 @@ export class StarwarsService {
     return films;
   }
 
-  async add(bodyFilm: FilmRequest): Promise<any> {
+  async add(bodyFilm: FilmRequest): Promise<TranslateFilmsResponse> {
     this.validator.validate(bodyFilm)
     bodyFilm.creado = new Date().toDateString()
     bodyFilm.id = (await this.dynamoRepository.listAll()).length + 1
     // dynamo
     // translate
     const filmToEnglish = this.translate.filmsToEnglish(bodyFilm.id, bodyFilm)
-    await this.dynamoRepository.add(filmToEnglish.id,filmToEnglish)
+    await this.dynamoRepository.add(filmToEnglish.id, filmToEnglish)
     return bodyFilm;
   }
 

@@ -1,0 +1,116 @@
+openapi: "3.0.1"
+info:
+  title: "Reto starwars-node-aws"
+  description: "Postulacion Anthony Cruz"
+  version: "1.0.0"
+servers:
+- url: "https://bn4pshew21.execute-api.us-west-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "dev"
+paths:
+  /films:
+    get:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayOfPelicula"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pelicula"
+        required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pelicula"
+  /films/{id}:
+    get:
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pelicula"
+components:
+  schemas:
+    ArrayOfPelicula:
+      type: array
+      items:
+        $ref: "#/components/schemas/Pelicula"
+    Pelicula:
+      type: object
+      properties:
+        id:
+          type: number 
+        episodio_id:
+          type: number  
+        titulo:
+          type: string
+        rastreo_apertura:
+          type: string
+        director:
+          type: string
+        productor:
+          type: string
+        fecha_lanzamiento:
+          type: string
+        caracteres:
+          type: string
+        planetas:
+          type: string
+        naves_estelares:
+          type: string
+        vehiculos:
+          type: string
+        especies:
+          type: string
+        creado:
+          type: string
+        editado:
+          type: string
