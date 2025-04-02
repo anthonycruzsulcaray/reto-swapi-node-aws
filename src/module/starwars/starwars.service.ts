@@ -42,8 +42,8 @@ export class StarwarsService {
   async add(bodyFilm: FilmRequest): Promise<TranslateFilmsResponse> {
     this.validator.validate(bodyFilm)
     bodyFilm.creado = new Date().toDateString()
-    bodyFilm.id = (await this.dynamoRepository.listAll()).length + 1
     // dynamo
+    bodyFilm.id = (await this.dynamoRepository.listAll()).length + 1
     // translate
     const filmToEnglish = this.translate.filmsToEnglish(bodyFilm.id, bodyFilm)
     await this.dynamoRepository.add(filmToEnglish.id, filmToEnglish)

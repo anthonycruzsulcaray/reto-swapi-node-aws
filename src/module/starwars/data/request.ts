@@ -6,11 +6,11 @@ export class FilmRequest {
     director: string
     productor: string
     fecha_lanzamiento: string
-    caracteres: string
-    planetas: string
-    naves_estelares: string
-    vehiculos: string
-    especies: string
+    caracteres: string[]
+    planetas: string[]
+    naves_estelares: string[]
+    vehiculos: string[]
+    especies: string[]
     creado: string
     editado: string
 }

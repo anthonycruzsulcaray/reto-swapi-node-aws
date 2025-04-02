@@ -16,15 +16,15 @@ export class TranslateFilmsResponse {
     @ApiProperty()
     fecha_lanzamiento: string
     @ApiProperty()
-    caracteres: string
+    caracteres: string[]
     @ApiProperty()
-    planetas: string
+    planetas: string[]
     @ApiProperty()
-    naves_estelares: string
+    naves_estelares: string[]
     @ApiProperty()
-    vehiculos: string
+    vehiculos: string[]
     @ApiProperty()
-    especies: string
+    especies: string[]
     @ApiProperty()
     creado: string
     @ApiProperty()
