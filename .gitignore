@@ -5,6 +5,7 @@ node_modules
 .serverless
 .build
 .package-lock.json
+package-lock.json
 # Logs
 logs
 *.log

@@ -10,17 +10,15 @@ export default class DynamoRepository {
         this.dynamoConn = dydb.dynamoClient()
     }
 
-    // listAll - Listar todo
     async listAll() {
-        var params = {
+        const params = {
             TableName: process.env.DYNAMO_DB_TABLE
         };
         return (await this.dynamoConn.scan(params).promise()).Items
     }
 
-    // listById - Listar por id
     async listById(id: number) {
-        var params = {
+        const params = {
             TableName: process.env.DYNAMO_DB_TABLE,
             Key: {
                 id: id

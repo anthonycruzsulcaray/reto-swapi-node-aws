@@ -17,7 +17,7 @@ export class StarwarsService {
     const resultRest = await this.dynamoRepository.listAll()
     console.log("resultRest:::  ", resultRest)
     let dataResponse: TranslateFilmsResponse[] = [];
-    for (var i = 0; i < resultRest.length; i++) {
+    for (let i = 0; i < resultRest.length; i++) {
       const dynamoId = resultRest[i].id
       const item = resultRest[i].data
       // translate
