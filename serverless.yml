@@ -2,17 +2,6 @@ service: starwars-api
 
 frameworkVersion: '3'
 
-
-plugins:
- - serverless-plugin-typescript
- - serverless-offline
- - serverless-plugin-log-retention
-custom:
-  logRetentionInDays: 7  
-  stage: ${opt:stage, self:provider.stage}
-  dotenv:
-    enabled: true
-    path: .env
 useDotenv: true
 provider:
   name: aws
@@ -29,6 +18,25 @@ provider:
         - Effect: Allow
           Action: 'dynamodb:*'
           Resource: '*'
+
+custom:
+  logRetentionInDays: 7  
+  stage: ${opt:stage, self:provider.stage}
+  dotenv:
+    enabled: true
+    path: .env
+
+plugins:
+ - serverless-plugin-typescript
+ - serverless-offline
+ - serverless-plugin-log-retention  
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - 'package.json'
+  individually: true
+
 functions:
   api:
     handler: src/serverlesDeploy/http/lambda.handler
@@ -48,4 +56,4 @@ functions:
           path: /starwars/films
           method: POST
           cors:
-            origin: '*'                 
+            origin: '*'
