@@ -1,0 +1,46 @@
+name: Build
+on:
+  push:
+    branches:
+      - develop
+      - release
+      - master
+  #pull_request:
+  #  types: [opened, synchronize, reopened]
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./reto-swapi-node-aws
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install --force --prefer-offline --no-audit --progress=false --no-fund
+
+      - name: Run tests
+        run: npm test -- --ci --reporters=default
+
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --progress=false --no-fund
+
+      - name: Run tests and generate coverage
+        run: npm test -- --ci --reporters=default
+        
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

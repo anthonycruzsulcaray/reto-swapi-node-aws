@@ -16,8 +16,7 @@ custom:
 useDotenv: true
 provider:
   name: aws
-  lambdaHashingVersion: '20201221'
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: us-west-1
   stage: dev
   memorySize: 250
