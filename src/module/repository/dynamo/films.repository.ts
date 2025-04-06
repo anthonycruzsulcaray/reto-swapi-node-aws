@@ -4,7 +4,7 @@ import DynamoDataBase from '../../db/dynamo';
 
 @Injectable()
 export default class DynamoRepository {
-    private dynamoConn: AWS.DynamoDB.DocumentClient
+    private readonly dynamoConn: AWS.DynamoDB.DocumentClient
 
     constructor(dydb: DynamoDataBase) {
         this.dynamoConn = dydb.dynamoClient()
