@@ -5,16 +5,12 @@ on:
       - develop
       - release
       - master
-  #pull_request:
-  #  types: [opened, synchronize, reopened]
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./reto-swapi-node-aws
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
