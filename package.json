@@ -71,7 +71,7 @@
     },
     "collectCoverageFrom": [
       "src/**/*.(t|j)s",
-      "!src/config/**",
+      "!src/module/api/**",
       "!src/utils/**/*",
       "!src/database/**",
       "!src/serverlesDeploy/**",

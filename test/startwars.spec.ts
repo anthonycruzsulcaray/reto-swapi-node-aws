@@ -15,7 +15,8 @@ describe('StarwarsController', () => {
     let service: StarwarsService;
     let apiFilms: FilmsApiRest;
     let validator: FilmsValidator;
-
+    let dynamoRepository: DynamoRepository;
+    let translate: TranslateObject;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +31,8 @@ describe('StarwarsController', () => {
         service = module.get<StarwarsService>(StarwarsService);
         apiFilms = module.get<FilmsApiRest>(FilmsApiRest);
         validator = module.get<FilmsValidator>(FilmsValidator);
+        dynamoRepository = module.get<DynamoRepository>(DynamoRepository);
+        translate = module.get<TranslateObject>(TranslateObject);
     });
 
     it('Obtener listado de películas', async () => {
@@ -153,12 +156,83 @@ describe('StarwarsController', () => {
             creado: 'xxx',
             editado: 'xx'
         };
-
         jest.spyOn(validator, 'validate').mockImplementation(() => {
             throw new Error('campo obligatorio: pelicula.titulo');
         });
         expect(service.add(invalidFilm)).rejects.toThrow('campo obligatorio: pelicula.titulo');
-        
     });
 
+
+    // Test para verificar que se llama a la función de DynamoDB y a la función de traducción ---
+    it('Debería listar todas las películas traducidas al español', async () => {
+        const mockDynamoData = [
+            { id: 1, data: { titulo: 'Film 1' } },
+            { id: 2, data: { titulo: 'Film 2' } },
+        ];
+        const mockTranslatedData = [
+            { id: 1, titulo: 'Película 1' },
+            { id: 2, titulo: 'Película 2' },
+        ];
+    
+        jest.spyOn(dynamoRepository, 'listAll').mockResolvedValue(mockDynamoData);
+        jest.spyOn(translate, 'filmsToSpanish').mockImplementation((dynamoId, film) => {
+            const translatedFilm = mockTranslatedData.find(f => f.id === dynamoId);
+            return {
+                ...film,
+                ...translatedFilm,
+                episodio_id: film.episodio_id,
+                rastreo_apertura: film.rastreo_apertura,
+                director: film.director,
+                productor: film.productor,
+                fecha_lanzamiento: film.fecha_lanzamiento,
+                caracteres: film.caracteres,
+                planetas: film.planetas,
+                naves_estelares: film.naves_estelares,
+                vehiculos: film.vehiculos,
+                especies: film.especies,
+                creado: film.creado,
+                editado: film.editado,
+            };
+
+        });
+        const result = await service.listall();
+        expect(dynamoRepository.listAll).toHaveBeenCalled();
+        expect(translate.filmsToSpanish).toHaveBeenCalledTimes(mockDynamoData.length);
+        expect(result).toEqual(mockTranslatedData);
+    });
+
+    // Test para verificar que se llama a la función de DynamoDB y a la función de traducción al agregar una película
+    it('Debería obtener una película por ID, guardarla en DynamoDB y traducirla', async () => {
+        const filmId = 1;
+        const mockApiResponse = { titulo: 'Film 1' };
+        const mockTranslatedFilm = {
+            id: filmId,
+            episodio_id: 1,
+            titulo: 'Película 1',
+            rastreo_apertura: 'It is a period of civil war the galaxy....',
+            director: 'George Lucas',
+            productor: 'Gary Kurtz, Rick McCallum',
+            fecha_lanzamiento: '1977-05-25',
+            caracteres: [],
+            planetas: [],
+            naves_estelares: [],
+            vehiculos: [],
+            especies: [],
+            creado: '2014-12-10T14:23:31.880000Z',
+            editado: '2014-12-20T19:49:45.256000Z',
+        };
+    
+        jest.spyOn(apiFilms, 'listById').mockResolvedValue(mockApiResponse);
+        jest.spyOn(dynamoRepository, 'add').mockResolvedValue();
+        jest.spyOn(translate, 'filmsToSpanish').mockReturnValue(mockTranslatedFilm);
+    
+        const result = await service.listById(filmId);
+    
+        expect(apiFilms.listById).toHaveBeenCalledWith(filmId);
+        expect(dynamoRepository.add).toHaveBeenCalledWith(filmId, mockApiResponse);
+        expect(translate.filmsToSpanish).toHaveBeenCalledWith(filmId, mockApiResponse);
+        expect(result).toEqual(mockTranslatedFilm);
+    });
+
+    
 });
