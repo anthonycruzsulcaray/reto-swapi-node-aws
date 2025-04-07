@@ -73,7 +73,6 @@
       "src/**/*.(t|j)s",
       "!src/module/api/**",
       "!src/utils/**/*",
-      "!src/database/**",
       "!src/serverlesDeploy/**",
       "!src/validation/**"
     ],

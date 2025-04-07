@@ -2,24 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { FilmsApiRest } from '../api/films';
 import DynamoRepository from '../repository/dynamo/films.repository';
 import { TranslateObject } from '../../utils/translateObject';
-import { TranslateFilmsResponse } from './data/response';
 import FilmsValidator from '../../validation/filmsValidation';
 import { FilmRequest } from './data/request';
+import { TranslateFilmsResponse } from './data/response';
 
 
 @Injectable()
 export class StarwarsService {
 
-  constructor(private apiFilms: FilmsApiRest, private dynamoRepository: DynamoRepository, private translate: TranslateObject, private validator: FilmsValidator) { }
+  constructor(private readonly apiFilms: FilmsApiRest, private readonly dynamoRepository: DynamoRepository,
+    private readonly translate: TranslateObject, private readonly validator: FilmsValidator) { }
 
   async listall(): Promise<TranslateFilmsResponse[]> {
     // dynamo
     const resultRest = await this.dynamoRepository.listAll()
     console.log("resultRest:::  ", resultRest)
     let dataResponse: TranslateFilmsResponse[] = [];
-    for (let i = 0; i < resultRest.length; i++) {
-      const dynamoId = resultRest[i].id
-      const item = resultRest[i].data
+    for (let value of resultRest) {
+      const dynamoId = value.id
+      const item = value.data
       // translate
       const films = this.translate.filmsToSpanish(dynamoId, item)
       dataResponse.push(films)

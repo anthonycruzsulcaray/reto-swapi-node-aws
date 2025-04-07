@@ -78,6 +78,27 @@ describe('StarwarsController', () => {
 
     it('Obtener una película por ID', async () => {
         const filmId = 99;
+
+
+        const responseById = new TranslateFilmsResponse();
+
+        Object.assign(responseById, {
+            id: filmId,
+            episodio_id: 99,
+            titulo: 'The Phantom Menace',
+            rastreo_apertura: "It is a period of civil war the galaxy....",
+            director: "George Lucas",
+            productor: "Gary Kurtz, Rick McCallum",
+            fecha_lanzamiento: "1977-05-25",
+            caracteres: [],
+            planetas: [],
+            naves_estelares: [],
+            vehiculos: [],
+            especies: [],
+            creado: "2014-12-10T14:23:31.880000Z",
+            editado: "2014-12-20T19:49:45.256000Z"
+        });
+        /*
         const responseById: TranslateFilmsResponse = {
             id: filmId,
             episodio_id: 99,
@@ -94,6 +115,9 @@ describe('StarwarsController', () => {
             creado: "2014-12-10T14:23:31.880000Z",
             editado: "2014-12-20T19:49:45.256000Z"
         };
+        */
+
+
         // Mock del servicio
         jest.spyOn(service, 'listById').mockImplementation((_id: number) => {
             return Promise.resolve(responseById);
