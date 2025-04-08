@@ -78,8 +78,6 @@ describe('StarwarsController', () => {
 
     it('Obtener una película por ID', async () => {
         const filmId = 99;
-
-
         const responseById = new TranslateFilmsResponse();
 
         Object.assign(responseById, {
@@ -116,8 +114,6 @@ describe('StarwarsController', () => {
             editado: "2014-12-20T19:49:45.256000Z"
         };
         */
-
-
         // Mock del servicio
         jest.spyOn(service, 'listById').mockImplementation((_id: number) => {
             return Promise.resolve(responseById);
@@ -197,7 +193,7 @@ describe('StarwarsController', () => {
             { id: 1, titulo: 'Película 1' },
             { id: 2, titulo: 'Película 2' },
         ];
-    
+
         jest.spyOn(dynamoRepository, 'listAll').mockResolvedValue(mockDynamoData);
         jest.spyOn(translate, 'filmsToSpanish').mockImplementation((dynamoId, film) => {
             const translatedFilm = mockTranslatedData.find(f => f.id === dynamoId);
@@ -245,18 +241,18 @@ describe('StarwarsController', () => {
             creado: '2014-12-10T14:23:31.880000Z',
             editado: '2014-12-20T19:49:45.256000Z',
         };
-    
+
         jest.spyOn(apiFilms, 'listById').mockResolvedValue(mockApiResponse);
         jest.spyOn(dynamoRepository, 'add').mockResolvedValue();
         jest.spyOn(translate, 'filmsToSpanish').mockReturnValue(mockTranslatedFilm);
-    
+
         const result = await service.listById(filmId);
-    
+
         expect(apiFilms.listById).toHaveBeenCalledWith(filmId);
         expect(dynamoRepository.add).toHaveBeenCalledWith(filmId, mockApiResponse);
         expect(translate.filmsToSpanish).toHaveBeenCalledWith(filmId, mockApiResponse);
         expect(result).toEqual(mockTranslatedFilm);
     });
 
-    
+
 });
