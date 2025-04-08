@@ -5,7 +5,7 @@ import { eventContext } from 'aws-serverless-express/middleware';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from '../app.module';
-const express = require('express');
+import express from 'express';
 
 const binaryMimeTypes: string[] = [];
 let cachedServer: Server;

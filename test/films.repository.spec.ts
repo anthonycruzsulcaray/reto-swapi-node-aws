@@ -16,7 +16,7 @@ describe('DynamoRepository', () => {
         const dynamoDataBaseMock = {
             dynamoClient: jest.fn().mockReturnValue(dynamoClientMock),
         };
-        dynamoRepository = new DynamoRepository(dynamoDataBaseMock as unknown as DynamoDataBase);
+        dynamoRepository = new DynamoRepository(dynamoDataBaseMock as DynamoDataBase);
         jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 

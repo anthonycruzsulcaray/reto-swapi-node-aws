@@ -20,7 +20,7 @@ provider:
           Resource: '*'
 
 custom:
-  logRetentionInDays: 7  
+  logRetentionInDays: 14  
   stage: ${opt:stage, self:provider.stage}
   dotenv:
     enabled: true
@@ -57,3 +57,4 @@ functions:
           method: POST
           cors:
             origin: '*'
+# LAMBDA - starwars-api-dev-api
