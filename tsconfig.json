@@ -9,15 +9,14 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
-    "baseUrl": "./",
     "incremental": false,
     "lib": ["es2017"],
-    "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": ".build",
     "rootDir": "./",
     "allowJs": true,
-  },
+    "types": ["node", "jest"]
+  },  
   "exclude": ["node_modules"]
 }

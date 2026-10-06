@@ -14,10 +14,10 @@ export default class DynamoRepository {
     async listAll() {
         try {
             const params = {
-                TableName: process.env.DYNAMO_DB_TABLE
+                TableName: process.env.DYNAMO_DB_TABLE!
             };
             return (await this.dynamoConn.scan(params).promise()).Items
-        } catch (error) {
+        } catch (error: any) {
             this.logger.error('Error al listar todos los elementos', error.stack);
             throw new Error('No se pudieron listar los elementos');
         }
@@ -26,14 +26,14 @@ export default class DynamoRepository {
     async listById(id: number) {
         try {
             const params = {
-                TableName: process.env.DYNAMO_DB_TABLE,
+                TableName: process.env.DYNAMO_DB_TABLE!,
                 Key: {
                     id: id
                 },
 
             };
             return await this.dynamoConn.get(params).promise();
-        } catch (error) {
+        } catch (error: any) {
             this.logger.error(`Error al obtener el elemento con ID: ${id}`, error.stack);
             throw new Error('No se pudo obtener el elemento por ID');
         }
@@ -43,13 +43,13 @@ export default class DynamoRepository {
     async add(idFilm: number, bodyFilm: any) {
         try {
             await this.dynamoConn.put({
-                TableName: process.env.DYNAMO_DB_TABLE,
+                TableName: process.env.DYNAMO_DB_TABLE!,
                 Item: {
                     id: idFilm,
                     data: bodyFilm,
                 },
             }).promise();
-        } catch (error) {
+        } catch (error: any) {
             this.logger.error(`Error al agregar la película con ID: ${idFilm}`, error.stack);
             throw new Error('No se pudo agregar la película');
         }

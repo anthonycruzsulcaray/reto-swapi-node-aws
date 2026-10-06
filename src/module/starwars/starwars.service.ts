@@ -15,7 +15,7 @@ export class StarwarsService {
 
   async listall(): Promise<TranslateFilmsResponse[]> {
     // dynamo
-    const resultRest = await this.dynamoRepository.listAll()
+    const resultRest: any = await this.dynamoRepository.listAll()
     console.log("resultRest:::  ", resultRest)
     let dataResponse: TranslateFilmsResponse[] = [];
     for (let value of resultRest) {
@@ -44,7 +44,8 @@ export class StarwarsService {
     this.validator.validate(bodyFilm)
     bodyFilm.creado = new Date().toDateString()
     // dynamo
-    bodyFilm.id = (await this.dynamoRepository.listAll()).length + 1
+    const totalFilms = (await this.dynamoRepository.listAll())?.length ?? 0
+    bodyFilm.id = totalFilms + 1
     // translate
     const filmToEnglish = this.translate.filmsToEnglish(bodyFilm.id, bodyFilm)
     await this.dynamoRepository.add(filmToEnglish.id, filmToEnglish)
